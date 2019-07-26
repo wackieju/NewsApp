@@ -39,6 +39,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.title.setText(currentItem.getTitle());
         if(currentItem.getImageUri() != null) {
             holder.thumb.setImageURI(currentItem.getImageUri());
+        }else {
+            holder.thumb.setImageResource(R.drawable.placeholder);
         }
         holder.subject.setText(currentItem.getSubject());
     }

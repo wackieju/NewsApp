@@ -3,11 +3,11 @@ package com.example.newsapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements androidx.loader.app.LoaderManager.LoaderCallbacks<List<News>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
     private final int EQ_LOADER_ID = 1;
 
     private String dummyKey = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
@@ -55,23 +55,23 @@ public class MainActivity extends AppCompatActivity implements androidx.loader.a
             // Update empty state with no connection error message
             mEmptyListTextView.setText(R.string.no_internet_connection);
         }
+
         getLoaderManager().initLoader(EQ_LOADER_ID, null, this);
     }
 
 
-    @NonNull
     @Override
-    public Loader<List<News>> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         return null;
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<List<News>> loader, List<News> data) {
+    public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> news) {
 
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<List<News>> loader) {
+    public void onLoaderReset(android.content.Loader<List<News>> loader) {
 
     }
 }

@@ -17,6 +17,14 @@ public class News {
         this.imageUri = imageUri;
     }
 
+    public News(String subject, String title, String webUrl, String date){
+        this.subject = subject;
+        this.title = title;
+        this.webUrl = webUrl;
+        this.date = date;
+        this.imageUri = null;
+    }
+
     public String getDate() {
         return date;
     }

@@ -1,5 +1,6 @@
 package com.example.newsapp;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder> {
 
@@ -29,7 +34,32 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+        News currentItem = mNews.get(position);
+        setDate(holder, currentItem);
+        holder.title.setText(currentItem.getTitle());
+        if(currentItem.getImageUri() != null) {
+            holder.thumb.setImageURI(currentItem.getImageUri());
+        }
+        holder.subject.setText(currentItem.getSubject());
+    }
 
+    private void setDate(@NonNull NewsViewHolder holder, News currentItem) {
+        String pubdate = "";
+        try{
+            String sourceDateString = currentItem.getDate();
+
+            SimpleDateFormat sourceSdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+            Date date = sourceSdf.parse(sourceDateString);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            pubdate = simpleDateFormat.format(date);
+        }catch (ParseException e){
+            Log.e("", "onBindViewHolder: ", e);
+            pubdate = currentItem.getDate();
+        }
+        finally {
+            holder.date.setText(pubdate);
+        }
     }
 
     @Override

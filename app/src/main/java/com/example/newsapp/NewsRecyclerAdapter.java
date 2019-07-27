@@ -45,6 +45,12 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.subject.setText(currentItem.getSubject());
     }
 
+    public void clear(){
+        int size = mNews.size();
+        mNews.clear();
+        notifyItemRangeChanged(0, size);
+    }
+
     private void setDate(@NonNull NewsViewHolder holder, News currentItem) {
         String pubdate = "";
         try{

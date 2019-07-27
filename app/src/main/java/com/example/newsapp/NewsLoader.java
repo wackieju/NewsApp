@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.loader.content.AsyncTaskLoader;
+import android.content.AsyncTaskLoader;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
         if(mUrl == null){
             return null;
         }
+        List<News> result = QueryUtils.fetchNewsData(mUrl);
         return null;
     }
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private String dummyKey = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
 
     private TextView mEmptyListTextView;
+    private NewsRecyclerAdapter mNewsRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +64,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        return null;
+        Uri baseUri = Uri.parse(dummyKey);
+
+
+        return new NewsLoader(this, baseUri.toString());
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> news) {
-
+        mNewsRecyclerAdapter.clear();
     }
 
     @Override

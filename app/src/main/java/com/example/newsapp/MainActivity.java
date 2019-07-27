@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEmptyListTextView = (TextView) findViewById(R.id.no_earthquakes_text_view);
 
         RecyclerView newsRecycler = (RecyclerView) findViewById(R.id.news_recycler);
-        NewsRecyclerAdapter newsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>());
+        mNewsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>());
 
-        newsRecycler.setAdapter(newsRecyclerAdapter);
+        newsRecycler.setAdapter(mNewsRecyclerAdapter);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

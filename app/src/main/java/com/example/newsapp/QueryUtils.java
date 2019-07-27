@@ -43,7 +43,8 @@ public final class QueryUtils {
         List<News> newsList = new ArrayList<>();
         try {
             JSONObject root = new JSONObject(jsonResponse);
-            JSONArray results = root.getJSONArray("results");
+            JSONObject response = root.getJSONObject("response");
+            JSONArray results = response.getJSONArray("results");
             for(int i = 0; i< results.length(); i++){
                 JSONObject currentNews = results.getJSONObject(i);
                 String title = currentNews.getString("webTitle");
@@ -53,7 +54,7 @@ public final class QueryUtils {
                 newsList.add(new News(subject,title,date, webUri));
             }
         }catch (JSONException e){
-            Log.e(LOG_TAG, "extractResultFromJsonData: ", e);
+            Log.e(LOG_TAG, "error extracting data: ", e);
         }
 
         return newsList;

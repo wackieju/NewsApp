@@ -73,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> news) {
         mNewsRecyclerAdapter.clear();
+        if(news != null && !news.isEmpty()){
+            mNewsRecyclerAdapter.addAll(news);
+        }
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<List<News>> loader) {
-
+        mNewsRecyclerAdapter.clear();
     }
 }

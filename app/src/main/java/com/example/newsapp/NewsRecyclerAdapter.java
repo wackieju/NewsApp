@@ -45,6 +45,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.subject.setText(currentItem.getSubject());
     }
 
+    public void addAll(List<News> news){
+        mNews.addAll(news);
+    }
+
     public void clear(){
         int size = mNews.size();
         mNews.clear();

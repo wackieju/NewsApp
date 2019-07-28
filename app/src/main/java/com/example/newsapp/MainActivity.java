@@ -3,6 +3,7 @@ package com.example.newsapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.LoaderManager;
@@ -13,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,8 +36,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEmptyListTextView = (TextView) findViewById(R.id.no_earthquakes_text_view);
 
         RecyclerView newsRecycler = (RecyclerView) findViewById(R.id.news_recycler);
-        mNewsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>());
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        mNewsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>());
+        newsRecycler.setLayoutManager(layoutManager);
         newsRecycler.setAdapter(mNewsRecyclerAdapter);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -66,20 +71,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         Uri baseUri = Uri.parse(dummyKey);
 
-
         return new NewsLoader(this, baseUri.toString());
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> news) {
-        mNewsRecyclerAdapter.clear();
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+        mEmptyListTextView.setVisibility(View.VISIBLE);
+        mEmptyListTextView.setText(R.string.no_news);
+        int size = mNewsRecyclerAdapter.clear();
+        mNewsRecyclerAdapter.notifyItemRangeChanged(0, size);
         if(news != null && !news.isEmpty()){
             mNewsRecyclerAdapter.addAll(news);
+            mNewsRecyclerAdapter.notifyDataSetChanged();
+            mEmptyListTextView.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<List<News>> loader) {
-        mNewsRecyclerAdapter.clear();
+        int size = mNewsRecyclerAdapter.clear();
+        mNewsRecyclerAdapter.notifyItemRangeChanged(0, size);
     }
 }

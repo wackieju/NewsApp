@@ -49,10 +49,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         mNews.addAll(news);
     }
 
-    public void clear(){
+    public int clear(){
         int size = mNews.size();
         mNews.clear();
-        notifyItemRangeChanged(0, size);
+        return size;
     }
 
     private void setDate(@NonNull NewsViewHolder holder, News currentItem) {
@@ -60,10 +60,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         try{
             String sourceDateString = currentItem.getDate();
 
-            SimpleDateFormat sourceSdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+            SimpleDateFormat sourceSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             Date date = sourceSdf.parse(sourceDateString);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
             pubdate = simpleDateFormat.format(date);
         }catch (ParseException e){
             Log.e("", "onBindViewHolder: ", e);

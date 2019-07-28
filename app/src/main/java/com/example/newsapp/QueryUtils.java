@@ -20,6 +20,7 @@ import java.util.List;
 
 public final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getName();
+    private static final String DATE_SEPARATOR = "T";
     private QueryUtils(){
 
     }
@@ -50,8 +51,10 @@ public final class QueryUtils {
                 String title = currentNews.getString("webTitle");
                 String subject = currentNews.getString("sectionName");
                 String webUri = currentNews.getString("webUrl");
-                String date = currentNews.getString("webPublicationDate");
-                newsList.add(new News(subject,title,date, webUri));
+                String rawDate = currentNews.getString("webPublicationDate");
+                String[] parts = rawDate.split(DATE_SEPARATOR);
+                String date = parts[0];
+                newsList.add(new News(subject,title, webUri, date));
             }
         }catch (JSONException e){
             Log.e(LOG_TAG, "error extracting data: ", e);

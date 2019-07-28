@@ -48,13 +48,22 @@ public final class QueryUtils {
             JSONArray results = response.getJSONArray("results");
             for(int i = 0; i< results.length(); i++){
                 JSONObject currentNews = results.getJSONObject(i);
+                JSONArray tags = currentNews.getJSONArray("tags");
+                String author = "";
+
                 String title = currentNews.getString("webTitle");
                 String subject = currentNews.getString("sectionName");
                 String webUri = currentNews.getString("webUrl");
                 String rawDate = currentNews.getString("webPublicationDate");
                 String[] parts = rawDate.split(DATE_SEPARATOR);
                 String date = parts[0];
-                newsList.add(new News(subject,title, webUri, date));
+                if(tags.optJSONObject(1).toString().equals("contributor")){
+                    author = currentNews.getString("webTitle");
+                    newsList.add(new News(subject,title, webUri, date, author));
+                }else {
+                    newsList.add(new News(subject,title, webUri, date));
+                }
+
             }
         }catch (JSONException e){
             Log.e(LOG_TAG, "error extracting data: ", e);

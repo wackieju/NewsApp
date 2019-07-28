@@ -18,6 +18,10 @@ import java.util.Locale;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder> {
 
+    public static final String INPUT_DATE_PATTERN = "yyyy-MM-dd";
+    public static final String OUTPUT_DATE_PATTERN = "MMMM dd, yyyy";
+    private final String NO_FIELD_CONST = "";
+
     private List<News> mNews;
 
 
@@ -35,8 +39,18 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         News currentItem = mNews.get(position);
-        setDate(holder, currentItem);
+
         holder.title.setText(currentItem.getTitle());
+
+        if(!currentItem.getAuthor().equals(NO_FIELD_CONST)){
+            holder.author.setText(currentItem.getAuthor());
+        }else{
+            holder.author.setVisibility(View.GONE);
+        }if(currentItem.getDate().equals(NO_FIELD_CONST)) {
+            setDate(holder, currentItem);
+        }else{
+            holder.date.setVisibility(View.GONE);
+        }
         if(currentItem.getImageUri() != null) {
             holder.thumb.setImageURI(currentItem.getImageUri());
         }else {
@@ -60,10 +74,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         try{
             String sourceDateString = currentItem.getDate();
 
-            SimpleDateFormat sourceSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            SimpleDateFormat sourceSdf = new SimpleDateFormat(INPUT_DATE_PATTERN, Locale.ENGLISH);
             Date date = sourceSdf.parse(sourceDateString);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(OUTPUT_DATE_PATTERN, Locale.getDefault());
             pubdate = simpleDateFormat.format(date);
         }catch (ParseException e){
             Log.e("", "onBindViewHolder: ", e);
@@ -83,6 +97,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         TextView title;
         TextView date;
         TextView subject;
+        TextView author;
         ImageView thumb;
 
         NewsViewHolder(@NonNull View itemView) {
@@ -90,6 +105,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             title = itemView.findViewById(R.id.title_text_view);
             date = itemView.findViewById(R.id.date_text_view);
             subject = itemView.findViewById(R.id.subject_text_view);
+            author = itemView.findViewById(R.id.author_text_view);
             thumb = (ImageView) itemView.findViewById(R.id.news_thumb);
         }
     }

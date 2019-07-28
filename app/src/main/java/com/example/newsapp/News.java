@@ -46,4 +46,8 @@ public class News {
     public Uri getImageUri() {
         return imageUri;
     }
+
+    public String getAuthor() {
+        return author;
+    }
 }

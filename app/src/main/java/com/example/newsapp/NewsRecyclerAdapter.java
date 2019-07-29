@@ -50,7 +50,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             holder.author.setText(currentItem.getAuthor());
         }else{
             holder.author.setVisibility(View.GONE);
-        }if(currentItem.getDate().equals(NO_FIELD_CONST)) {
+        }if(!currentItem.getDate().equals(NO_FIELD_CONST)) {
             setDate(holder, currentItem);
         }else{
             holder.date.setVisibility(View.GONE);

@@ -23,8 +23,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
     private final int EQ_LOADER_ID = 1;
 
-    private String dummyKey = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
-
     private TextView mEmptyListTextView;
     private NewsRecyclerAdapter mNewsRecyclerAdapter;
 
@@ -69,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        Uri baseUri = Uri.parse(dummyKey);
+        String key = Constants.API_KEY_STRING;
+        Uri baseUri = Uri.parse(key);
 
         return new NewsLoader(this, baseUri.toString());
     }

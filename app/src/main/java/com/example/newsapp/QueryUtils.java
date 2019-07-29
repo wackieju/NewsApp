@@ -53,15 +53,19 @@ public final class QueryUtils {
 
                 String title = currentNews.getString("webTitle");
                 String subject = currentNews.getString("sectionName");
-                String webUri = currentNews.getString("webUrl");
+                String rawUri = currentNews.getString("webUrl");
                 String rawDate = currentNews.getString("webPublicationDate");
                 String[] parts = rawDate.split(DATE_SEPARATOR);
+
+                String uri = rawUri.replace("\\", "");
                 String date = parts[0];
+
+
                 if(tags.optJSONObject(1).toString().equals("contributor")){
                     author = currentNews.getString("webTitle");
-                    newsList.add(new News(subject,title, webUri, date, author));
+                    newsList.add(new News(subject,title, uri, date, author));
                 }else {
-                    newsList.add(new News(subject,title, webUri, date));
+                    newsList.add(new News(subject,title, uri, date));
                 }
 
             }

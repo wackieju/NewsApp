@@ -11,4 +11,5 @@
 /build
 /captures
 .externalNativeBuild
-app/src/main/java/com/example/newsapp/constants
+app/src/main/java/com/example/newsapp/Constants.java
+

@@ -10,7 +10,7 @@ public class News {
     private Uri imageUri;
     private String author;
 
-    public News(String subject, String title, String webUrl, String date,  String author, Uri imageUri){
+    public News(String subject, String title, String webUrl, String date, String author, Uri imageUri) {
         this.subject = subject;
         this.title = title;
         this.webUrl = webUrl;
@@ -19,11 +19,11 @@ public class News {
         this.author = author;
     }
 
-    public News(String subject, String title, String webUrl, String date, String author){
-        this(subject,title,webUrl,date,author, null);
+    public News(String subject, String title, String webUrl, String date, String author) {
+        this(subject, title, webUrl, date, author, null);
     }
 
-    public News(String subject, String title, String webUrl, String date){
+    public News(String subject, String title, String webUrl, String date) {
         this(subject, title, webUrl, date, "");
     }
 

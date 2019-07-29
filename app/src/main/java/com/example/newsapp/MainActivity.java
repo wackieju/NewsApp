@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
-        mNewsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>());
+        mNewsRecyclerAdapter = new NewsRecyclerAdapter(new ArrayList<News>(), this);
         newsRecycler.setLayoutManager(layoutManager);
         newsRecycler.setAdapter(mNewsRecyclerAdapter);
 

@@ -1,5 +1,8 @@
 package com.example.newsapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +26,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     private final String NO_FIELD_CONST = "";
 
     private List<News> mNews;
+    private Context mContext;
 
-
-    public NewsRecyclerAdapter(List<News> news){
+    public NewsRecyclerAdapter(List<News> news, Context context){
         this.mNews = news;
+        mContext = context;
     }
 
     @NonNull
@@ -57,6 +61,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             holder.thumb.setImageResource(R.drawable.placeholder);
         }
         holder.subject.setText(currentItem.getSubject());
+        holder.webUri = currentItem.getWebUrl();
     }
 
     public void addAll(List<News> news){
@@ -99,14 +104,24 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         TextView subject;
         TextView author;
         ImageView thumb;
+        String webUri;
 
-        NewsViewHolder(@NonNull View itemView) {
+        NewsViewHolder(@NonNull final View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title_text_view);
             date = itemView.findViewById(R.id.date_text_view);
             subject = itemView.findViewById(R.id.subject_text_view);
             author = itemView.findViewById(R.id.author_text_view);
             thumb = (ImageView) itemView.findViewById(R.id.news_thumb);
+            //setup tag for item click
+            itemView.setTag(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUri));
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

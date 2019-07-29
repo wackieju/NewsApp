@@ -21,16 +21,18 @@ import java.util.List;
 public final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getName();
     private static final String DATE_SEPARATOR = "T";
-    private QueryUtils(){
+
+    private QueryUtils() {
 
     }
-    public static List<News> fetchNewsData(String queryString){
+
+    public static List<News> fetchNewsData(String queryString) {
         URL url = createUrl(queryString);
         String jsonResponse = null;
 
         try {
             jsonResponse = makeHttpRequest(url);
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "IOException ", e);
         }
         List<News> newsList = extractResultFromJsonData(jsonResponse);
@@ -38,7 +40,7 @@ public final class QueryUtils {
     }
 
     private static List<News> extractResultFromJsonData(String jsonResponse) {
-        if(TextUtils.isEmpty(jsonResponse)){
+        if (TextUtils.isEmpty(jsonResponse)) {
             return null;
         }
         List<News> newsList = new ArrayList<>();
@@ -46,30 +48,31 @@ public final class QueryUtils {
             JSONObject root = new JSONObject(jsonResponse);
             JSONObject response = root.getJSONObject("response");
             JSONArray results = response.getJSONArray("results");
-            for(int i = 0; i< results.length(); i++){
+            for (int i = 0; i < results.length(); i++) {
                 JSONObject currentNews = results.getJSONObject(i);
-                JSONArray tags = currentNews.getJSONArray("tags");
-                String author = "";
 
                 String title = currentNews.getString("webTitle");
                 String subject = currentNews.getString("sectionName");
                 String rawUri = currentNews.getString("webUrl");
                 String rawDate = currentNews.getString("webPublicationDate");
-                String[] parts = rawDate.split(DATE_SEPARATOR);
 
+                String[] parts = rawDate.split(DATE_SEPARATOR);
                 String uri = rawUri.replace("\\", "");
                 String date = parts[0];
-
-
-                if(tags.optJSONObject(1).toString().equals("contributor")){
-                    author = currentNews.getString("webTitle");
-                    newsList.add(new News(subject,title, uri, date, author));
-                }else {
-                    newsList.add(new News(subject,title, uri, date));
+                //check if there are tags
+                if (currentNews.has("tags")) {
+                    JSONArray tags = currentNews.getJSONArray("tags");
+                    //check if the second object is a contributor
+                    if (tags.optJSONObject(1).toString().equals("contributor")) {
+                        String author = currentNews.getString("webTitle");
+                        newsList.add(new News(subject, title, uri, date, author));
+                    }
+                } else {
+                    newsList.add(new News(subject, title, uri, date));
                 }
 
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(LOG_TAG, "error extracting data: ", e);
         }
 
@@ -79,7 +82,7 @@ public final class QueryUtils {
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = null;
 
-        if(url == null){
+        if (url == null) {
             return jsonResponse;
         }
 
@@ -99,20 +102,20 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
 
-        }catch (IOException e){
-            Log.e(LOG_TAG, "Problem retrieving the news JSON result." ,e);
-        }finally {
-            if(urlConnection!=null){
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem retrieving the news JSON result.", e);
+        } finally {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if(inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
         }
         return jsonResponse;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException{
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
